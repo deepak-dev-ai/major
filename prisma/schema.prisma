@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  username String
+  email    String   @unique
+  password String
+  avatar   String?
+  role     RoleType @default(staff)
+}
+
+model Product {
+  id          String              @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  category    ProductCategoryType @default(others)
+  image       String
+  price       Float
+  stock       Int
+  sale        Sale[]
+}
+
+model Sale {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  productId String   @db.ObjectId
+  product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  quantity  Int      @default(1)
+}
+
+enum RoleType {
+  admin
+  staff
+  manager
+}
+
+enum ProductCategoryType {
+  electronics
+  clothing
+  decor
+  food
+  beauty
+  sports
+  accessories
+  furniture
+  others
+}
