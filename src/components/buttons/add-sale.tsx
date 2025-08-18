@@ -17,6 +17,7 @@ export default function AddSale({ product }: { product: Product }) {
       return;
     }
     try {
+      setIsLoading(true);
       const response: {
         createSale: Sale;
       } = await gqlClient.request(CREATE_SALE, {
@@ -31,6 +32,8 @@ export default function AddSale({ product }: { product: Product }) {
     } catch (error) {
       console.error("Add sale error:", error);
       toast.error("Failed to add product to sale");
+    } finally {
+      setIsLoading(false);
     }
   }
   return (
@@ -42,7 +45,9 @@ export default function AddSale({ product }: { product: Product }) {
         max={product.stock}
         onChange={(e) => setQuantity(Number(e.target.value))}
       />
-      <Button onClick={handleAddToSale}>Add to sale</Button>
+      <Button onClick={handleAddToSale}>
+        {isLoading ? "Adding..." : "Add to sale"}
+      </Button>
     </>
   );
 }

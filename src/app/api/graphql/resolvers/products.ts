@@ -1,4 +1,3 @@
-import { getUserFromCookies } from "@/lib/services/helper";
 import prismaClient from "@/lib/services/prisma";
 import { ProductCategoryType } from "../../../../../generated/prisma";
 
@@ -14,9 +13,6 @@ export async function addProduct(
   }
 ) {
   try {
-    const user = await getUserFromCookies();
-    if (user?.role !== "admin") return false;
-
     return await prismaClient.product.create({
       data: args,
     });
@@ -47,7 +43,7 @@ export async function getProductById(
       include: {
         sale: {
           orderBy: {
-            createdAt: "desc",
+            createdAt: "asc",
           },
         },
       },

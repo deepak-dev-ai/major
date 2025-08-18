@@ -44,8 +44,8 @@ export default async function ProductPage({
     );
   }
   console.log("sales:", product?.sale);
-  const chartData =
-    product?.sale?.map((sale) => {
+  const chartData = product?.sale
+    ?.map((sale) => {
       const date = new Date(Number(sale.createdAt));
       const format = date.toDateString();
       const quantity = sale.quantity;
@@ -54,7 +54,16 @@ export default async function ProductPage({
         quantity,
       };
       return obj;
-    }) || [];
+    })
+    .reduce((acc: { createdAt: string; quantity: number }[], curr) => {
+      const existing = acc.find((item) => item.createdAt === curr.createdAt);
+      if (existing) {
+        existing.quantity += curr.quantity;
+      } else {
+        acc.push(curr);
+      }
+      return acc;
+    }, []);
 
   return (
     <main className="min-h-screen bg-background text-foreground py-12 px-4 md:px-8">
