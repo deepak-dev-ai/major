@@ -1,4 +1,5 @@
-"use server";
+export const dynamic = "force-dynamic";
+
 import { cookies } from "next/headers";
 import { verifyToken } from "./jwt";
 import prismaClient from "./prisma";
