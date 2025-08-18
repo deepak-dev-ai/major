@@ -3,6 +3,7 @@ import AddProduct from "@/components/product/add-product";
 import GetAllProducts from "@/components/product/get-all-products";
 import { getUserFromCookies } from "@/lib/services/helper";
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 export default async function Home() {
   const user = await getUserFromCookies();
   const isAdmin = user?.role === "admin";
