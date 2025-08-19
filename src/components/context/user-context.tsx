@@ -2,7 +2,7 @@
 import { createContext } from "react";
 import { RoleType } from "../../../generated/prisma";
 
-type userwithoutPassword = {
+export type userwithoutPassword = {
   id: string;
   email: string;
   name: string;

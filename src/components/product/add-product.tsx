@@ -52,6 +52,7 @@ export default function AddProduct() {
 
       if (data.addProduct) {
         toast.success("Product added successfully");
+        window.location.reload();
         setTitle("");
         setDescription("");
         setCategory("");

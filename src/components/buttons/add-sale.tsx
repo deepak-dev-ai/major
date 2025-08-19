@@ -26,6 +26,7 @@ export default function AddSale({ product }: { product: Product }) {
       });
       if (response?.createSale) {
         toast.success("Product added to sale");
+        window.location.reload();
       } else {
         toast.error("failed to add to sale");
       }

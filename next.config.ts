@@ -4,8 +4,8 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   experimental: {
     serverActions: {
-      bodySizeLimit: "2mb", // optional
-      allowedOrigins: ["*"], // optional
+      bodySizeLimit: "2mb",
+      allowedOrigins: ["*"],
     },
   },
   images: {

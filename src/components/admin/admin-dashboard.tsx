@@ -5,6 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
 import { Card } from "../ui/card";
 import CreateUser from "./create-user";
+import UpdateUserRole from "./update-user-role";
 
 export default async function AdminDashboard() {
   const data: {
@@ -20,7 +21,7 @@ export default async function AdminDashboard() {
       {users.map((user) => (
         <Card
           key={user.id}
-          className="p-4 m-8 flex-row items-center justify-between"
+          className="p-4 m-8 md:flex-row flex-col items-center justify-between"
         >
           <div>
             <Avatar>
@@ -32,12 +33,14 @@ export default async function AdminDashboard() {
           </div>
           <div className="text-center ">
             <h2 className="text-lg font-semibold">{user?.name || "Guest"}</h2>
-            <p className="text-sm text-gray-500">{user?.email || "No email"}</p>
           </div>
           <div>
             <Badge>
               {user?.role?.charAt(0).toUpperCase() + user?.role?.slice(1)}
             </Badge>
+          </div>
+          <div>
+            <UpdateUserRole user={user} />
           </div>
         </Card>
       ))}

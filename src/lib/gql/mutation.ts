@@ -24,3 +24,18 @@ export const CREATE_SALE = `
 mutation CreateSale($id: String!, $quantity: Int!) {
   createSale(id: $id, quantity: $quantity)
 }`;
+export const UPDATE_USER = `
+mutation Mutation($userId: String, $name: String, $username: String, $email: String, $avatar: String) {
+  updateUserProfile(userId: $userId, name: $name, username: $username, email: $email, avatar: $avatar)
+}`;
+
+export const UPDATE_USER_ROLE = `
+mutation UpdateUserRole($userId: String!, $role: String!) {
+  updateUserRole(userId: $userId, role: $role)
+}`;
+
+export const LOGOUT_USER = `
+mutation UpdateUserRole {
+  logoutUser
+}
+`;

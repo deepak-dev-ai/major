@@ -135,3 +135,12 @@ export async function getAllUsers() {
     return [];
   }
 }
+export async function logoutUser() {
+  try {
+    const cookieStore = await cookies();
+    cookieStore.delete("token");
+    return true;
+  } catch (error) {
+    return false;
+  }
+}

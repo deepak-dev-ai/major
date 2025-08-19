@@ -9,6 +9,7 @@ const typeDefs = gql`
     getProductById(id: String!): Product
   }
   type Mutation {
+    logoutUser: Boolean
     createUser(
       name: String!
       email: String!

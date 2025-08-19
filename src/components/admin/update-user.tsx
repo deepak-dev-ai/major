@@ -10,70 +10,60 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { UPDATE_USER } from "@/lib/gql/mutation";
+import gqlClient from "@/lib/services/gql";
+import { Edit } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import { User } from "../../../generated/prisma";
-import { Plus } from "lucide-react";
-import gqlClient from "@/lib/services/gql";
-import { CREATE_USER } from "@/lib/gql/mutation";
+import { userwithoutPassword } from "../context/user-context";
 
-export default function CreateUser() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("staff");
+export default function EditUser({ user }: { user: userwithoutPassword }) {
+  const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
+  const [username, setUsername] = useState(user.username);
+  const [avatar, setAvatar] = useState("");
   const [loading, setLoading] = useState(false);
-  async function handleAddUser() {
+  async function handleEditUser() {
     setLoading(true);
     try {
       const data: {
-        createUser: User;
-      } = await gqlClient.request(CREATE_USER, {
+        updateUserProfile: userwithoutPassword;
+      } = await gqlClient.request(UPDATE_USER, {
+        userId: user.id,
         name,
         email,
-        password,
         username,
-        role,
+        avatar,
       });
-      if (data.createUser) {
-        toast.success("User created successfully");
+      if (data?.updateUserProfile) {
+        toast.success("User updated successfully");
         window.location.reload();
         setName("");
         setEmail("");
         setUsername("");
-        setPassword("");
+        setAvatar("");
       } else {
-        toast.error("Failed to create User");
+        toast.error("Failed to update User");
       }
     } catch (error) {
-      console.error("Error creating user:", error);
-      toast.error("Failed to create User");
+      toast.error("Failed to updating User");
     } finally {
       setLoading(false);
     }
   }
-
   return (
     <Dialog>
       <form>
         <DialogTrigger asChild>
           <Button variant="outline">
-            ADD MEMBER <Plus className="ml-2 h-4 w-4" />
+            <Edit />
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>Add a member</DialogTitle>
+            <DialogTitle>Edit your profile</DialogTitle>
             <DialogDescription>
               Click on save when you&apos;re done.
             </DialogDescription>
@@ -109,26 +99,13 @@ export default function CreateUser() {
             </div>
 
             <div className="grid gap-3">
-              <Label>Password</Label>
+              <Label>Avatar</Label>
               <Input
-                name="password"
-                type="password"
-                placeholder="Enter password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="avatar"
+                placeholder="Enter avatar URL"
+                value={avatar}
+                onChange={(e) => setAvatar(e.target.value)}
               />
-            </div>
-            <div className="grid gap-3">
-              <Label>Role</Label>
-              <Select value={role} onValueChange={setRole}>
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="manager">Manager</SelectItem>
-                  <SelectItem value="staff">Staff</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
           </div>
 
@@ -136,8 +113,8 @@ export default function CreateUser() {
             <DialogClose asChild>
               <Button variant="outline">Cancel</Button>
             </DialogClose>
-            <Button disabled={loading} type="submit" onClick={handleAddUser}>
-              {loading ? "Adding..." : "Add User"}
+            <Button disabled={loading} type="submit" onClick={handleEditUser}>
+              {loading ? "Editing..." : "Edit User"}
             </Button>
           </DialogFooter>
         </DialogContent>
