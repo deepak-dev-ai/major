@@ -15,7 +15,7 @@ export default async function GetAllProducts() {
       {products.map((product) => (
         <Card
           key={product.id}
-          className="flex flex-col items-center p-6 h-90 w-70 rounded-xl "
+          className="flex flex-col items-center p-6 h-90 w-90 rounded-xl "
         >
           <div className="relative w-full h-full shadow-lg cursor-pointer hover:shadow-2xl transition-shadow duration-200 ">
             <Link href={`/product/${product.id}`}>

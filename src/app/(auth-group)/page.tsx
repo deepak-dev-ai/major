@@ -8,7 +8,7 @@ export default async function Home() {
   const user = await getUserFromCookies();
   const isAdmin = user?.role === "admin";
   return (
-    <main className="flex flex-col md:flex-row h-full w-full">
+    <main className="flex justify-center flex-col md:flex-row h-full w-full">
       <section className={`${isAdmin ? "md:w-2/3 w-full" : "w-full"} p-4`}>
         <h2 className="text-2xl text-center font-semibold">Products </h2>
         <div className="m-8">
